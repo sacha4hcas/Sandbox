@@ -1,9 +1,7 @@
+#python setup.py build_ext --inplace
 import time
-import enum
 import pygame
 import random
-import numpy as np
-import m_cython as cython
 
 class Base_Cell:
 	def __init__(o, sandbox = None, pos = (0,0)):
@@ -87,7 +85,6 @@ class Sandbox:
 		o.w = w
 		o.h = h
 		o.surface = pygame.Surface([w, h])
-		o.vectorize = np.vectorize(lambda cell : o.update_cell(cell))
 		
 		#o.surface = pygame.transform.scale(o.surface, (screen_w, screen_h))
 		#o.surface = pygame.transform.flip(o.surface, False, True)
@@ -120,15 +117,6 @@ class Sandbox:
 			cell.update()
 			cell.checked = True
 
-	def update_cells_map(o):
-		list(map(lambda cell : o.update_cell(cell), o.cells))
-		for cell in o.cells:
-			cell.checked = False 
-
-	def update_cells_vectorize(o):
-		o.vectorize(o.cells)
-		for cell in o.cells:
-			cell.checked = False 
 
 	def update_cells(o):
 		rand = 1#random.random()
@@ -239,11 +227,6 @@ class Simulation:
 			pygame.display.update()
 			
 			
-				
-
-
-			
-
 	def insert_new_cell(o):
 		mouse_pos = pygame.mouse.get_pos()
 		#print(mouse_pos)
@@ -263,6 +246,3 @@ class Simulation:
 		o.screen.blit(surface, (0,0))
 
 
-
-simulation = cython.Simulation(cython.Sandbox(48, 27), 1600, 800, max_fps=1000)
-simulation.run()
